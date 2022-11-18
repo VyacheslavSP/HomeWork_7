@@ -1,46 +1,19 @@
-// вариант поиска индекса по значению числа
-byte[,] BuildArray()
+/* Вариант спорный и странный(обобенно к теме как не надо псиать код) и все таки решил показать
+данный вариант может найти свое применение, когда у нас сильно многомерный массив (условно 1024 измерения) или какй-то пилообразный
+для нормального поиска элемента по индексу необходимо было бы передать все 1024 индекса.Однако, тот же
+forache проходится по всем элементам вне зависимости от количесва строк/столбцов. а метод .Length() возвращает общее число элеменотов
+под капотом,если я правильно понял,все массивы все равно разворачиваются в строчку,значит для системы нет разницы как именно мы будем обрабатывать
+таким образом мы можем искать элементы не по индексу а по его позиции относительно нулевого элемента.*/
+byte [,] BuildArray ()
 {
-  var rnd =new Random();
-  byte tmpSqear=(byte)rnd.Next(2,byte.MaxValue); // минимальный квадрат 2х2. иначе одномерный массив
-  byte[,] myArray=new byte[tmpSqear,tmpSqear];
-  for (byte i=0;i<tmpSqear;i++)
+  var Rand=new Random();
+  double[,] ResultsArray= new double[Rows,Collum];
+  for(byte i=0;i<Rows;i++)
   {
-    for(byte j=0;j<tmpSqear;j++)
+    for(byte j=0;j<Collum;j++)
     {
-      myArray[i,j]=(byte)rnd.Next(byte.MinValue,byte.MaxValue);
+      ResultsArray[i,j]=Math.Round(Rand.Next(sbyte.MinValue,sbyte.MaxValue)+Rand.NextDouble(),1);
     }
   }
-  return myArray;
+  return ResultsArray;
 }
-void SreachPozition(byte[,] myArray, byte number)
-{
-  try{
-    for (int i=0; i<=myArray.GetLength(1); i++) {
-      for (int j=0; j<=myArray.GetLength(0); j++) {
-        if (myArray[i,j]==number) {
-          Console.WriteLine("Индексы числа {"+i+","+j+"}");
-          return;
-        }
-      }
-    }
-  }
-  catch
-  {
-    Console.WriteLine("такого числа в массиве нет");
-  }
-}
-byte[,]myArray=BuildArray();
-//byte[,]myArray=new byte[,]{{1,4,7,123},{5,9,2,3},{8,4,140,255}};
-byte number;
-while (true) {
-  Console.WriteLine("Введите искомое число от 0 до 255");
-  try {
-    number=Convert.ToByte(Console.ReadLine());
-    break;
-  }
-  catch {
-    Console.WriteLine("Ошибка: неккорекный ввод числа");
-  }
-}
-SreachPozition(myArray,number);
